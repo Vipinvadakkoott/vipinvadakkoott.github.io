@@ -1,70 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPACES AND SHAPES</title>
-    <style>
-        body {
-            font-family: Cambria, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f6f6f6;
-        }
-        header {
-            background-color: #238;
-            color: #27;
-            text-align: center;
-            padding: 1em;
-        }
-        section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-        footer {
-            text-align: center;
-            padding: 1em;
-            background-color: #238;
-            color: #fff;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
 </head>
-<body>
-
-    <header>
-        <h1>SPACES AND SHAPES</h1>
-        <p>Welcome to our website!</p>
-    </header>
-
-    <section>
-        <h2>About Us</h2>
-        <p>Spaces and Shapes is a leading construction firm located at Thodupuzha.</p>
-    </section>
-
-    <section>
-        <h2>Services</h2>
-        <ul>
-            <li>PERMIT APPLICATION</li>
-            <li>TOTAL STATION SURVEY</li>
-            <li>CONSTRUCTION AND SITE SUPERVISION</li>
-        </ul>
-    </section>
-
-    <section>
-        <h2>Contact Us</h2>
-        <p>Email: vipinvadakkoott@gmail.com</p>
-        <p>Phone: +91 9744583858</p>
-    </section>
-
-    <footer>
-        &copy; 2024 SPACES AND SHAPES. All rights reserved.
-    </footer>
-
+<body style='margin : 0px; overflow: hidden;'>
+    <a-scene embedded arjs='sourceType: webcam;'>
+        <a-marker preset = "hiro">
+            <a-entity gltf-model="url(ImageToStl.com_model-3d+rai.glb)" position="0 0 0" scale = "0.5 0.5 0.5 "></a-entity>
+        </a-marker>
+        <a-entity camera></a-entity>
+    </a-scene>
 </body>
 </html>
