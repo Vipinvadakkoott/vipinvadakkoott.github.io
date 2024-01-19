@@ -7,7 +7,7 @@
 <body style='margin : 0px; overflow: hidden;'>
     <a-scene embedded arjs='sourceType: webcam;'>
         <a-marker preset = "hiro">
-            <a-entity gltf-model="url(ImageToStl.com_model-3d+rai.glb)" position="0 0 0" scale = "0.005 0.005 0.005 "></a-entity>
+            <a-entity gltf-model="url(ImageToStl.com_model-3d+rai.glb)" position="0 0 0" scale = "0.5 0.5 0.5 "></a-entity>
         </a-marker>
         <a-entity camera></a-entity>
     </a-scene>
