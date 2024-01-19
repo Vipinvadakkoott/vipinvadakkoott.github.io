@@ -1,41 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLB Viewer</title>
-    <style>
-        body { margin: 0; }
-        canvas { display: block; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Viewer</title>
+  <style>
+    body { margin: 0; }
+    canvas { display: block; }
+  </style>
 </head>
 <body>
-    <script type="module">
-        import * as THREE from 'https://threejs.org/build/three.module.js';
-        import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
+  <script type="module">
+    import * as THREE from 'https://cdn.skypack.dev/three@110.0.1/build/three.module.js';
+    import { GLTFLoader } from 'https://cdn.skypack.dev/three@110.0.1/examples/jsm/loaders/GLTFLoader.js';
 
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-        const loader = new GLTFLoader();
-        loader.load('ImageToStl.com_model-3d+rai.glb', (gltf) => {
-            scene.add(gltf.scene);
-        });
+    const loader = new GLTFLoader();
+    let glbModel;
 
-        camera.position.z = 5;
+    loader.load('path/to/your/file.glb', (gltf) => {
+      glbModel = gltf.scene;
+      scene.add(glbModel);
+    });
 
-        const animate = () => {
-            requestAnimationFrame(animate);
+    camera.position.z = 5;
 
-            // Add any animations or updates here if needed
+    const animate = () => {
+      requestAnimationFrame(animate);
 
-            renderer.render(scene, camera);
-        };
+      if (glbModel) {
+        // Add any animations or camera controls here if needed
+      }
 
-        animate();
-    </script>
+      renderer.render(scene, camera);
+    };
+
+    window.addEventListener('resize', () => {
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+
+      camera.aspect = newWidth / newHeight;
+      camera.updateProjectionMatrix();
+
+      renderer.setSize(newWidth, newHeight);
+    });
+
+    animate();
+  </script>
 </body>
 </html>
