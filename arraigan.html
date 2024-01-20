@@ -3,54 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Model Viewer</title>
-    <script type="module">
-        import * as THREE from 'https://threejs.org/build/three.module.js';
-        import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
-
-        document.addEventListener('DOMContentLoaded', init);
-
-        function init() {
-            // Set up the scene
-            const scene = new THREE.Scene();
-            
-            // Set up the camera
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 5;
-
-            // Set up the renderer
-            const renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
-
-            // Load the .glb model
-            const loader = new GLTFLoader();
-            loader.load('ImageToStl.com_model-3d+rai.glb', (gltf) => {
-                // Set the model's position and scale
-                gltf.scene.position.set(0, 0, 0); // Set the origin
-                gltf.scene.scale.set(.01, .01, .01);    // Set the scale
-
-                // Add the model to the scene
-                scene.add(gltf.scene);
-
-                // Animate the scene
-                animate();
-            });
-
-            // Function to animate the scene
-            function animate() {
-                requestAnimationFrame(animate);
-
-                // Rotate the model (optional)
-                // gltf.scene.rotation.x += 0.01;
-                // gltf.scene.rotation.y += 0.01;
-
-                // Render the scene
-                renderer.render(scene, camera);
-            }
-        }
-    </script>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
 </head>
-<body style="margin: 0; overflow: hidden;">
+<body>
+    <a-scene embedded arjs="sourceType: webcam;">
+
+        <!-- Load your .glb file -->
+        <a-gltf-model src="path/to/your/model.glb"></a-gltf-model>
+
+        <!-- Display camera feed -->
+        <a-entity camera></a-entity>
+
+    </a-scene>
 </body>
 </html>
