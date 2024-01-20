@@ -3,26 +3,112 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/aframevr/aframe/1.2.0/dist/aframe-ar.js"></script>
+  <title>AR Experience</title>
+  <script type="module">
+    import * as THREE from 'https://threejs.org/build/three.module.js';
+    import { GLTFLoader } from 'https://threejs.org/examples/jsm/loaders/GLTFLoader.js';
+    import { XRControllerModelFactory } from 'https://threejs.org/examples/jsm/webxr/XRControllerModelFactory.js';
+    import { XRHandModelFactory } from 'https://threejs.org/examples/jsm/webxr/XRHandModelFactory.js';
+
+    let scene, camera, renderer, controller, gltfLoader, model;
+
+    init();
+
+    function init() {
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.body.appendChild(renderer.domElement);
+
+      // Setup XR
+      navigator.xr.requestDevice().then((device) => {
+        const xrButton = document.createElement('button');
+        xrButton.innerHTML = 'Enter XR';
+        xrButton.style.position = 'absolute';
+        xrButton.style.top = '10px';
+        xrButton.style.left = '10px';
+        document.body.appendChild(xrButton);
+
+        xrButton.addEventListener('click', () => {
+          device.requestSession({ immersive: true, exclusive: true }).then(onSessionStarted);
+        });
+      });
+
+      function onSessionStarted(session) {
+        session.addEventListener('end', onSessionEnded);
+
+        const xrReferenceSpace = await session.requestReferenceSpace('local');
+
+        // Setup controllers
+        const controller1 = renderer.xr.getController(0);
+        controller1.addEventListener('selectstart', onSelectStart);
+        scene.add(controller1);
+
+        const controller2 = renderer.xr.getController(1);
+        controller2.addEventListener('selectstart', onSelectStart);
+        scene.add(controller2);
+
+        // Load 3D model
+        gltfLoader = new GLTFLoader();
+        gltfLoader.load('path/to/your/model.glb', (gltf) => {
+          model = gltf.scene;
+          scene.add(model);
+        });
+
+        // Setup XR session
+        session.updateRenderState({ baseLayer: new XRWebGLLayer(session, renderer) });
+        session.requestAnimationFrame(onXRFrame);
+
+        // Start XR session
+        session.requestAnimationFrame(onXRFrame);
+
+        controller = renderer.xr.getController(0);
+        controller.addEventListener('selectstart', onSelectStart);
+        scene.add(controller);
+      }
+
+      function onSessionEnded(event) {
+        scene.remove(controller);
+      }
+
+      function onSelectStart(event) {
+        const controller = event.target;
+
+        if (model && controller) {
+          const position = controller.position.clone();
+          const rotation = controller.rotation.clone();
+
+          // Adjust the position and rotation of the model as needed
+          // You might want to adjust based on the device orientation, etc.
+
+          model.position.copy(position);
+          model.rotation.copy(rotation);
+
+          scene.add(model.clone());
+        }
+      }
+
+      function onXRFrame(time, frame) {
+        const session = frame.session;
+
+        // Handle controller input, etc.
+
+        renderer.render(scene, camera);
+        session.requestAnimationFrame(onXRFrame);
+      }
+
+      // Handle window resize
+      window.addEventListener('resize', onWindowResize, false);
+    }
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+  </script>
 </head>
 <body>
-  <a-scene
-    embedded
-    arjs="debugUIEnabled: false; trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
-  >
-
-    <!-- Define the origin and scale of the object -->
-    <a-entity id="ar-object" position="0 0 0" scale="1 1 1">
-
-      <!-- Load the .glb file -->
-      <a-gltf-model src="ImageToStl.com_model-3d+rai.glb"></a-gltf-model>
-
-    </a-entity>
-
-    <!-- Display the camera feed -->
-    <a-entity camera></a-entity>
-
-  </a-scene>
 </body>
 </html>
