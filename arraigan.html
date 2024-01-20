@@ -1,57 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>3D Viewer</title>
-  <style>
-    body { margin: 0; }
-    canvas { display: block; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLB Viewer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/110/three.min.js"></script>
 </head>
 <body>
-  <script type="module">
-    import * as THREE from 'https://cdn.skypack.dev/three@110.0.1/build/three.module.js';
-    import { GLTFLoader } from 'https://cdn.skypack.dev/three@110.0.1/examples/jsm/loaders/GLTFLoader.js';
+    <script>
+        // Set up the scene
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+        // Add camera controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-    const loader = new GLTFLoader();
-    let glbModel;
+        // Load GLB model
+        const loader = new THREE.GLTFLoader();
+        loader.load('path/to/your/model.glb', (gltf) => {
+            scene.add(gltf.scene);
+        });
 
-    loader.load('ImageToStl.com_model-3d+rai.glb', (gltf) => {
-      glbModel = gltf.scene;
-      scene.add(glbModel);
-    });
+        // Set camera position
+        camera.position.z = 5;
 
-    camera.position.z = 5;
+        // Animation loop
+        const animate = () => {
+            requestAnimationFrame(animate);
+            controls.update(); // Update controls
+            renderer.render(scene, camera);
+        };
 
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      if (glbModel) {
-        // Add any animations or camera controls here if needed
-      }
-
-      renderer.render(scene, camera);
-    };
-
-    window.addEventListener('resize', () => {
-      const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
-
-      camera.aspect = newWidth / newHeight;
-      camera.updateProjectionMatrix();
-
-      renderer.setSize(newWidth, newHeight);
-    });
-
-    animate();
-  </script>
+        animate();
+    </script>
 </body>
 </html>
