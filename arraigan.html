@@ -2,22 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=0">
-  <title>AR Viewer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+  <script src="https://raw.githack.com/aframevr/aframe/1.2.0/dist/aframe-ar.js"></script>
 </head>
-<body style="margin: 0; overflow: hidden;">
-  <a-scene embedded arjs="sourceType: webcam; trackingMethod: best;">
-    <!-- Add the .glb model entity with position, rotation, and scale -->
-    <a-entity gltf-model="#yourModel" scale="1 1 1" position="0 0 0" rotation="0 0 0"></a-entity>
-    <!-- Add a camera entity -->
-    <a-entity camera></a-entity>
-  </a-scene>
+<body>
+  <a-scene
+    embedded
+    arjs="debugUIEnabled: false; trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+  >
 
-  <!-- Include your .glb model -->
-  <a-assets>
-    <a-asset-item id="yourModel" src="ImageToStl.com_model-3d+rai.glb"></a-asset-item>
-  </a-assets>
+    <!-- Define the origin and scale of the object -->
+    <a-entity id="ar-object" position="0 0 0" scale="1 1 1">
+
+      <!-- Load the .glb file -->
+      <a-gltf-model src="path/to/your/model.glb"></a-gltf-model>
+
+    </a-entity>
+
+    <!-- Display the camera feed -->
+    <a-entity camera></a-entity>
+
+  </a-scene>
 </body>
 </html>
