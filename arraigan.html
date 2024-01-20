@@ -25,10 +25,10 @@
 
             // Load the .glb model
             const loader = new GLTFLoader();
-            loader.load('path/to/your/model.glb', (gltf) => {
+            loader.load('ImageToStl.com_model-3d+rai.glb', (gltf) => {
                 // Set the model's position and scale
                 gltf.scene.position.set(0, 0, 0); // Set the origin
-                gltf.scene.scale.set(1, 1, 1);    // Set the scale
+                gltf.scene.scale.set(.01, .01, .01);    // Set the scale
 
                 // Add the model to the scene
                 scene.add(gltf.scene);
